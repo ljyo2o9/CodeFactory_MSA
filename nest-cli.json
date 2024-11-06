@@ -8,17 +8,8 @@
     "tsConfigPath": "apps/delivery/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/delivery",
+  "root": "apps/user",
   "projects": {
-    "delivery": {
-      "type": "application",
-      "root": "apps/delivery",
-      "entryFile": "main",
-      "sourceRoot": "apps/delivery/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/delivery/tsconfig.app.json"
-      }
-    },
     "user": {
       "type": "application",
       "root": "apps/user",
