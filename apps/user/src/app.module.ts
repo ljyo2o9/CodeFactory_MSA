@@ -12,6 +12,8 @@ import { User } from './user/entity/user.entity';
       isGlobal: true,
       validationSchema: Joi.object({
         HTTP_PORT: Joi.string().required(),
+        REFRESH_TOKEN_SECRET: Joi.string().required(),
+        ACCESS_TOKEN_SECRET: Joi.string().required(),
         DB_HOST: Joi.string().required(),
         DB_PORT: Joi.number().required(),
         DB_USERNAME: Joi.string().required(),
