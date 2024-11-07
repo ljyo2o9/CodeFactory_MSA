@@ -18,7 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/delivery/test/jest-e2e.json",
-    "test:user:watch": "jest --watch --testPathPattern=apps/user/src/user --coverage --collectCoverageFrom=apps/user/src/user/**"
+    "test:user:watch": "jest --watch --testPathPattern=apps/user/src/user --coverage --collectCoverageFrom=apps/user/src/user/**",
+    "test:auth:watch": "jest --watch --testPathPattern=apps/user/src/auth --coverage --collectCoverageFrom=apps/user/src/auth/**"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

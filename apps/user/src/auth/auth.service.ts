@@ -49,7 +49,7 @@ export class AuthService {
   async register(rawToken: string, registerDto: RegisterDto) {
     const { email, password } = this.parseBasicToken(rawToken);
 
-    return this.userService.create({ ...registerDto, email, password });
+    return await this.userService.create({ ...registerDto, email, password });
   }
 
   async login(rawToken: string) {
@@ -63,22 +63,22 @@ export class AuthService {
   }
 
   async issueToken(user: any, isRefreshToken: boolean) {
-    const refreshTokenSecret = this.configService.getOrThrow<string>(
-      'REFRESH_TOKEN_SECRET',
-    );
-    const accessTokenSecret = this.configService.getOrThrow<string>(
-      'ACCESS_TOKEN_SECRET',
-    );
+    let secret: string;
+    if (isRefreshToken) {
+      secret = this.configService.getOrThrow<string>('REFRESH_TOKEN_SECRET');
+    } else {
+      secret = this.configService.getOrThrow<string>('ACCESS_TOKEN_SECRET');
+    }
 
-    return this.jwtService.signAsync(
+    return await this.jwtService.signAsync(
       {
         sub: user.id ?? user.sub,
         role: user.role,
         type: isRefreshToken ? 'refresh' : 'access',
       },
       {
-        secret: isRefreshToken ? refreshTokenSecret : accessTokenSecret,
-        expiresIn: '3600h'
+        secret: secret,
+        expiresIn: '3600h',
       },
     );
   }
