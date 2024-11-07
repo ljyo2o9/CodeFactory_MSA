@@ -10,6 +10,8 @@ services:
     depends_on:
       mysql_user:
         condition: service_healthy
+    env_file:
+      - ./apps/user/.env
     ports:
       - '3001:3000'
     volumes:
@@ -18,6 +20,7 @@ services:
 
   mysql_user:
     image: mysql:9.0
+    container_name: 'mysql_db'
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       TZ: Asia/Seoul
