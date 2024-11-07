@@ -4,19 +4,27 @@ import { UserService } from '../user.service';
 
 describe('UserController', () => {
   let userController: UserController;
+  let userService: UserService;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      controllers: [UserController],
-      providers: [UserService],
+      providers: [
+        UserController,
+        {
+          provide: UserService,
+          useValue: {},
+        },
+      ],
     }).compile();
 
     userController = app.get<UserController>(UserController);
+    userService = app.get<UserService>(UserService);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(userController.getHello()).toBe('Hello World!');
+  describe('UserController Defined', () => {
+    it('should', () => {
+      expect(userController).toBeDefined();
+      expect(userService).toBeDefined();
     });
   });
 });
