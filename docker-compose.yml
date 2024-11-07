@@ -2,6 +2,7 @@
 
 services:
   user:
+    container_name: 'user_api'
     build: 
       context: .
       dockerfile: ./apps/user/Dockerfile
