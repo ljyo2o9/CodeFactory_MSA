@@ -13,7 +13,7 @@ services:
     ports:
       - '3001:3000'
     volumes:
-      - .:/user/src/app
+      - .:/usr/src/app
       - /usr/src/app/node_modules
 
   mysql_user:
