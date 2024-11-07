@@ -21,7 +21,7 @@ services:
 
   mysql_user:
     image: mysql:9.0
-    container_name: 'mysql_db'
+    container_name: 'mysql_user_db'
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       TZ: Asia/Seoul
@@ -31,7 +31,45 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
     volumes:
-      - ./mysql/:/var/lib/mysql
+      - ./mysql/user:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+  
+  product:
+    container_name: 'product_api'
+    build:
+      context: .
+      dockerfile: ./apps/product/Dockerfile
+      target: development
+    command: npm run start:dev product
+    depends_on:
+      mysql_product:
+        condition: service_healthy
+    env_file:
+      - ./apps/product/.env
+    ports:
+      - '3002:3000'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  mysql_product:
+    image: mysql:9.0
+    container_name: 'mysql_product_db'
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      TZ: Asia/Seoul
+    ports:
+      - '6002:3306'
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./mysql/product:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       interval: 5s
