@@ -7,15 +7,17 @@ services:
       dockerfile: ./apps/user/Dockerfile
       target: development
     command: npm run start:dev user
+    depends_on:
+      mysql_user:
+        condition: service_healthy
     ports:
       - '3001:3000'
     volumes:
       - .:/user/src/app
       - /usr/src/app/node_modules
 
-  mysql:
-    image: mysql:9
-    restart: always
+  mysql_user:
+    image: mysql:9.0
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       TZ: Asia/Seoul
