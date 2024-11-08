@@ -29,6 +29,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         synchronize: true,
       }),
     }),
-    ProductModule],
+    ProductModule,
+  ],
 })
 export class AppModule {}
