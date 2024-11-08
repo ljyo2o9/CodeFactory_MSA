@@ -3,6 +3,7 @@ import { ProductModule } from './product/product.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Product } from './product/entity/product.entity';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         port: configService.get<number>('DB_PORT'),
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
-        entities: [],
+        entities: [Product],
         database: 'db',
         synchronize: true,
       }),
