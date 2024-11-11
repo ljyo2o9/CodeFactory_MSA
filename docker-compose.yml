@@ -150,3 +150,39 @@ services:
       timeout: 5s
       retries: 10
       start_period: 5s
+
+  notification:
+    container_name: 'notification_api'
+    build:
+      context: .
+      dockerfile: ./apps/notification/Dockerfile
+      target: development
+    command: npm run start:dev notification
+    depends_on:
+      mongo_notification:
+        condition: service_healthy
+    env_file:
+      - ./apps/notification/.env
+    ports:
+      - '3005:3000'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  mongo_notification:
+    image: mongo:8
+    container_name: 'mongo_notification_db'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: 1234
+    ports:
+      - '6005:27017'
+    volumes:
+      - ./mongo/notification:/data/lib
+    command: mongod --quiet --logpath /dev/null
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
