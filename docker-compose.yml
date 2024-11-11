@@ -112,3 +112,41 @@ services:
       timeout: 5s
       retries: 10
       start_period: 5s
+
+  payment:
+    container_name: 'payment_api'
+    build:
+      context: .
+      dockerfile: ./apps/payment/Dockerfile
+      target: development
+    command: npm run start:dev payment
+    depends_on:
+      mysql_payment:
+        condition: service_healthy
+    env_file:
+      - ./apps/payment/.env
+    ports:
+      - '3004:3000'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  mysql_payment:
+    image: mysql:9.0
+    container_name: 'mysql_payment_db'
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      TZ: Asia/Seoul
+    ports:
+      - '6004:3306'
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./mysql/payment:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
